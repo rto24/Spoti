@@ -1,39 +1,47 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
 import './App.css'
 
-// import { SidebarLayout } from './components/template/catalyst/sidebar-layout'
+import Signin from './pages/Signin'
+import Signup from './pages/Signup'
+import OpenSpots from './pages/OpenSpots'
+import MySpots from './pages/MySpots'
+import CreateSpot from './pages/CreateSpot'
+import Settings from './pages/Settings'
+
+import Onboarding from './pages/Onboarding'
+import SpotListing from './pages/SpotListing'
+
+import { ApplicationLayout } from './components/application-layout'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [showNavbar, setShowNavbar] = useState(false);
+
+
+  const withLayout = (Component) => {
+    return (
+      <ApplicationLayout showNavbar={showNavbar} setShowNavbar={setShowNavbar}>
+        <Component />
+      </ApplicationLayout>
+    );
+  };
+
 
   return (
     <>
-      {/* <SidebarLayout>
-      </SidebarLayout> */}
-      <div className="text-red-400">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Routes>
+          <Route path="/" element={<Signin/>}/>
+          <Route path="/signup" element={<Signup/>}/>
+          <Route path="/open-spot" element={withLayout(OpenSpots)}/>
+          <Route path="/create-spot" element={withLayout(CreateSpot)}/>
+          <Route path="/my-spots" element={withLayout(MySpots)}/>
+          <Route path="/settings" element={withLayout(Settings)}/>
+      </Routes>
     </>
   )
 }
 
-export default App
+export default App;
