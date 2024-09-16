@@ -1,11 +1,17 @@
-/** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Inter, sans-serif', { fontFeatureSettings: '"cv11"' }],
+      },
+    },
   },
   plugins: [],
 }
+/** @type {import('tailwindcss').Config} */
+module.exports = config
