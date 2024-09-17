@@ -4,17 +4,21 @@
 -- address: string
 -- price: number
 -- description: string
+-- start_date: string
+-- end_date: string
 -- spot_car_photos: [array of images]
 -- spot_building_photos: [array of images]
 -- status: available or not
 -- requestors: array of users
 -- renter: user id
-CREATE table spot (
+CREATE TABLE spot (
     spot_id SERIAL PRIMARY KEY, -- Unique identifier for the spot
     owner_id INT NOT NULL, -- owner_id FROM users model
     address VARCHAR(255) NOT NULL, -- address
     price DECIMAL(10, 2) NOT NULL, -- price
-    description VARCHAR(255) NOT NULL -- description 
+    description VARCHAR(255) NOT NULL, -- description
+    start_date TIMESTAMP NOT NULL, -- start date
+    end_date TIMESTAMP NOT NULL, -- end date
     spot_photos TEXT[] DEFAULT '{}', -- spot car photos
     building_photos TEXT[] DEFAULT '{}', -- spot building photos
     status BOOLEAN DEFAULT TRUE, -- status
