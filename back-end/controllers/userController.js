@@ -13,7 +13,7 @@ const userController = {
         try {
             const { username, password } = req.body;
 
-            const userQuery = 'SELECT * FROM Users WHERE username = $1';
+            const userQuery = 'SELECT * FROM "Users" WHERE username = $1';
             const userResult = await pool.query(userQuery, [username]);
 
             if (userResult.rows.length === 0) {
@@ -48,7 +48,7 @@ const userController = {
             // check for duplicate user
             const dupeUserQuery = 'SELECT * FROM "User" WHERE username = $1';
             const dupeUserResult = await pool.query(dupeUserQuery, [username]);
-            // console.log('Check if user exists:', dupeUserResult);
+            console.log('Check if user exists:', dupeUserResult);
 
             if (dupeUserResult.rows.length > 0) {
                 return res.status(409).json("duplicate user");
