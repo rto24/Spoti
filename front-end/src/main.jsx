@@ -5,10 +5,15 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 
+import { SettingsProvider } from './contexts/settingsContext.jsx'
+
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <SettingsProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </SettingsProvider>
   </StrictMode>,
 )
