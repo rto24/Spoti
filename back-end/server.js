@@ -13,18 +13,7 @@ const renterRoutes = require('./routes/renterRoutes.js');
 const bookerRoutes = require('./routes/bookerRoutes.js');
 
 require('dotenv').config();
-require('./middleware/passport.js')
-
-// app.get('/', (req, res) => {
-//   pool.query('SELECT NOW()', (err, dbRes) => {
-//     if (err) {
-//       console.log('Error fetching data from db', err);
-//       res.status(500).send('Database error');
-//     } else {
-//       res.status(200).send(`Database connected: ${dbRes.rows[0].now}`)
-//     }
-//   });
-// });
+require('./middleware/passport.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,8 +23,19 @@ app.use(passport.initialize());
 
 app.use('/', sharedRoutes);
 app.use('/auth', authRoutes);
-// app.use('', renterRoutes);
-// app.use('', bookerRoutes);
+app.use('/renter', renterRoutes);
+app.use('/book', bookerRoutes);
+
+app.get('/', (req, res) => {
+  pool.query('SELECT NOW()', (err, dbRes) => {
+    if (err) {
+      console.log('Error fetching data from db', err);
+      res.status(500).send('Database error');
+    } else {
+      res.status(200).send(`Database connected: ${dbRes.rows[0].now}`)
+    }
+  });
+});
 
 app.use((req, res) => {
   return res.status(404).send('404 Not Found');
