@@ -11,6 +11,7 @@ const SettingsProvider = ({children}) => {
   /* ------------- Helper functions ------------- */
 
   const updateBuilding = (building) => {
+    console.log('newbuilding', building)
     setBuilding(building);
   };
 
