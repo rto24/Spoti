@@ -31,8 +31,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Signin />} />
         <Route path='/signup' element={<Signup />} />
-        <Route path='/spot-listing' element={withLayout(SpotListing)} />
         <Route path='/open-spot' element={withLayout(OpenSpots)} />
+        <Route path='/spot/:id' element={withLayout(SpotListing)} />
         <Route path='/create-spot' element={withLayout(CreateSpot)} />
         <Route path='/my-spots' element={withLayout(MySpots)} />
         <Route path='/settings' element={withLayout(Settings)} />
