@@ -26,7 +26,6 @@ import useFormatDate from '../hooks/useFormatDate'; // Adjust the path as necess
 
 import * as spotsService from '../services/spotsService'
 
-
 export const metadata = {
   title: "Events",
 };

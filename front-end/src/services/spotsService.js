@@ -22,6 +22,26 @@ const getSpots = async () => {
   };
 
 
+const getMySpots = async (userId) => {
+  console.log('fetch made', userId)
+  try {
+    const res = await fetch(`http://localhost:8080/renter/spots/${userId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`);
+    }
+
+    const mySpots = await res.json()
+    console.log('mySpots from fetch', mySpots)
+
+  //   return await res.json();
+    return mySpots
+  } catch (err) {
+    console.log(`error in spotsServce.getSpots: ${err.message}`);
+  }
+};
 
 const createSpot = async (formData) => {
   console.log('create spot form;',formData)
@@ -46,5 +66,6 @@ const createSpot = async (formData) => {
   export { 
     getSpots,
     createSpot, 
+    getMySpots,
   };
   
