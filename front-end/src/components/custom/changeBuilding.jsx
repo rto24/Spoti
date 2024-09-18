@@ -18,7 +18,7 @@ export function ChangeBuilding({updateBuilding}) {
 
   return (
     <>
-      <Button type="button" onClick={() => setIsOpen(true)}>
+      <Button type="button"outline onClick={() => setIsOpen(true)}>
         Change Building
       </Button>
       <Dialog open={isOpen} onClose={setIsOpen}>

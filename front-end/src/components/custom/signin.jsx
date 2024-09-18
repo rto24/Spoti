@@ -1,37 +1,18 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+import { Button } from '../template/catalyst/button'
+import { Heading, Subheading } from '../template/catalyst/heading'
+
 export default function Example() {
     return (
       <>
-        {/*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-gray-50">
-          <body class="h-full">
-          ```
-        */}
         <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <img
-              alt="Your Company"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              className="mx-auto h-10 w-auto"
+              alt="Spoti Logo"
+              src="./src/assets/logo_spoti_white.png"
+              className="mx-auto h-16 w-auto"
             />
-            <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign in to your account
+            <h2 className=" text-center text-xl font-bold leading-9 tracking-wide text-white">
+              Peer to Peer Parking Rentals
             </h2>
           </div>
   
@@ -91,12 +72,19 @@ export default function Example() {
                 </div>
   
                 <div>
-                  <button
+                  <Button
+                    type="submit"
+                    color="sky"
+                    className="w-full"
+                  >
+                    Sigin
+                  </Button>
+                  {/* <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Sign in
-                  </button>
+                  </button> */}
                 </div>
               </form>
   
@@ -110,7 +98,7 @@ export default function Example() {
                   </div>
                 </div>
   
-                <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="mt-6 grid grid-cols-1 gap-4">
                   <a
                     href="http://localhost:8080/auth/google"
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
@@ -136,7 +124,7 @@ export default function Example() {
                     <span className="text-sm font-semibold leading-6">Google</span>
                   </a>
   
-                  <a
+                  {/* <a
                     href="#"
                     className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                   >
@@ -148,14 +136,14 @@ export default function Example() {
                       />
                     </svg>
                     <span className="text-sm font-semibold leading-6">GitHub</span>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
   
-            <p className="mt-10 text-center text-sm text-gray-500">
+            <p className="mt-10 text-center text-sm text-white">
               Not a member?{' '}
-              <a href="/signup" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+              <a href="/signup" className="underline leading-6 text-white hover:text-gray-200">
                 Create your account
               </a>
             </p>
