@@ -104,7 +104,7 @@ const SpotListing = () => {
   useEffect(() => {
     const helper = async () => {
       try {
-        const fetchedListing = await spotsService.getSpotListing(2);
+        const fetchedListing = await spotsService.getSpotListing(id);
         setListingData(fetchedListing);
       } catch (err) {
         console.log('Error in fetching listing:', err);
