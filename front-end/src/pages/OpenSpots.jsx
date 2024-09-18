@@ -24,6 +24,8 @@ import {
 import { SettingsContext } from '../contexts/settingsContext'
 import useFormatDate from '../hooks/useFormatDate'; // Adjust the path as necessary
 
+import { useNavigate } from 'react-router-dom';
+
 import * as spotsService from '../services/spotsService'
 
 export const metadata = {
@@ -81,6 +83,8 @@ export default function OpenSpots() {
   const context = useContext(SettingsContext);
   const { building, updateBuilding, userData } = context || {}; // Fallback to an empty object to avoid destructuring errors if context is null
   
+  const navigate = useNavigate();
+
   // Check if context is available and log it
   useEffect(() => {
     if (context) {
@@ -116,6 +120,10 @@ export default function OpenSpots() {
     const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed
     return `${day}/${month}`;
   };
+
+  const handleSpotListing = (spot) => {
+    navigate(`/spot/${spot.spot_id}`)
+  }
 
   
   return (
@@ -197,7 +205,7 @@ export default function OpenSpots() {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button color="sky">Book</Button>
+                    <Button color="sky" onClick={() => handleSpotListing(spot)}>Book</Button>
                     {/* <Button outline>See Details</Button> */}
                 </div>
                 </div>
