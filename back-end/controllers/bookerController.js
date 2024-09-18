@@ -53,6 +53,48 @@ const bookerController = {
                 message: { err: "An error occurred while confirming the booking" },
               });
         }
+    },
+    async getSpot (req, res, next) {
+        try {
+            const { spot_id } = req.params;
+
+            const spotQuery = 'SELECT * FROM "Spot" WHERE spot_id = $1';
+            const spotResult = await pool.query(spotQuery, [spot_id]);
+
+            if (spotResult.rows.length === 0) {
+                return res.status(404).json({ message: "Spot not found" });
+            }
+
+            res.locals.spot = spotResult.rows[0];
+            next();
+        } catch (err) {
+            return next({
+                log: `bookerController error from getSpot ${err}`,
+                status: 500,
+                message: { err: "An error occurred while getting the spot information" },
+              });
+        }
+    },
+    async addBookingRequest (req, res, next) {
+        try {
+            const { spot_id, booker_id } = req.params;
+
+            const query = `UPDATE "Spot" SET requestors = array_append(requestors, $1) WHERE spot_id = $2 RETURNING *`;
+            const result = await pool.query(query, [booker_id, spot_id]);
+
+            if (result.rows.length === 0) {
+                return res.status(404).json({ message: "Spot not found" });
+            }
+
+            res.locals.updatedSpot = result.rows[0];
+            next();
+        } catch (err) {
+            return next({
+                log: `bookerController error from addBookingRequest ${err}`,
+                status: 500,
+                message: { err: "An error occurred while adding the requestor" },
+              });
+        }
     }
 }
 
