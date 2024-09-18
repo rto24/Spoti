@@ -48,7 +48,7 @@ const userController = {
             // check for duplicate user
             const dupeUserQuery = 'SELECT * FROM "User" WHERE username = $1';
             const dupeUserResult = await pool.query(dupeUserQuery, [username]);
-            console.log('Check if user exists:', dupeUserResult);
+            // console.log('Check if user exists:', dupeUserResult);
 
             if (dupeUserResult.rows.length > 0) {
                 return res.status(409).json("duplicate user");
