@@ -164,9 +164,9 @@ export default function OpenSpots() {
                     <div className="w-52 shrink-0">
                     <Badge
                         className="text-base/5 sm:text-base/5 mb-2"
-                        color={spot.status === false ? "lime" : "zinc"}
+                        color={spot.status === true ? "lime" : "zinc"}
                     >
-                        {spot.status === true ? "Unavailable" : "Available"}
+                        {spot.status === true ? "Available" : "Unavailable"}
                     </Badge>
                     <Link href={spot.url} aria-hidden="true">
                         <img
