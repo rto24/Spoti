@@ -6,8 +6,6 @@ import { Button } from '../components/template/catalyst/button'
 import { Heading, Subheading } from '../components/template/catalyst/heading'
 
 
-
-
 const CreateSpot =(props)=> {
     const navigate = useNavigate();
     const [message, setMessage] = useState(['']);

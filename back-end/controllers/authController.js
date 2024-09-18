@@ -4,7 +4,7 @@ const authController = {}
 
 authController.googleCallback = (req, res) => {
   const user = req.user;
-  const token = jwt.sign({ id: user.user_id, email: user.email }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ id: user.user_id, email: user.email, username: user.username }, process.env.JWT_SECRET, {
     expiresIn: '1h',
   });
 
@@ -26,6 +26,14 @@ authController.verifyJWT = (req, res, next) => {
     req.user = decoded;
     next();
   })
+}
+
+authController.getUserCred = (req, res) => {
+  return res.status(200).json({
+    id: req.user.id,
+    email: req.user.email,
+    username: req.user.username,
+  });
 }
 
 module.exports = authController;
