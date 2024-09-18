@@ -100,7 +100,7 @@ export default function OpenSpots() {
             const spotsData = await spotsService.getSpots()
             
             spotsData.map((spot) => {
-                spot.description = "Out of town for a week"
+                // spot.description = "Out of town for a week"
                 spot.name = `${Math.floor(Math.random() * 100) + 1}`
             })
 
@@ -118,7 +118,7 @@ export default function OpenSpots() {
     const date = new Date(dateString);
     const day = String(date.getUTCDate()).padStart(2, '0');
     const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed
-    return `${day}/${month}`;
+    return `${month}/${day}`;
   };
 
   const handleSpotListing = (spot) => {
