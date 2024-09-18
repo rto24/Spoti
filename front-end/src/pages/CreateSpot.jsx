@@ -10,7 +10,6 @@ const CreateSpot =(props)=> {
     const navigate = useNavigate();
     const [message, setMessage] = useState(['']);
     const [formData, setFormData] = useState({
-      renter_id: '',
       img: '',
       start_date: '',
       end_date: '',
