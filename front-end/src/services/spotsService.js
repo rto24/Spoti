@@ -12,8 +12,6 @@ const getSpots = async () => {
     console.log(`error in spotsServce.getSpots: ${err.message}`);
   }
 };
-
-export { getSpots };
 const getSpotListing = async (ownerId) => {
   try {
     const res = await fetch(`https://localhost:8080/spot/${ownerId}`, {
@@ -28,4 +26,20 @@ const getSpotListing = async (ownerId) => {
     console.log(`Error in getSpotListing: ${err.message}`);
   }
 };
-export { getSpotListing };
+
+const bookSpot = async (ownerId) => {
+  try {
+    const res = await fetch(`https://localhost:8080/spot/${ownerId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: 1 }),
+    });
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`);
+    }
+  } catch (err) {
+    console.log(`Error in getSpotListing: ${err.message}`);
+  }
+};
+
+export { getSpots, getSpotListing, bookSpot };

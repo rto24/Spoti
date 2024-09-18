@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import * as spotsService from '../services/spotsService';
 import './SpotListing.module.css';
 
@@ -10,18 +10,14 @@ import {
 } from '../components/template/catalyst/description-list';
 import { Subheading, Heading } from '../components/template/catalyst/heading';
 
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import {
   CalendarIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  EllipsisHorizontalIcon,
+  MapPinIcon,
 } from '@heroicons/react/20/solid';
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -69,10 +65,6 @@ const SpotListing = () => {
   const [listingData, setListingData] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
-  const navigate = useNavigate();
-
-  console.log('from params:', id);
 
   useEffect(() => {
     const fetchedListing = spotsService.getSpotListing(id);
@@ -113,38 +105,31 @@ const SpotListing = () => {
 
   const handleBooking = () => {
     if (selectedDate) {
-      setModalOpen(true); // Open the modal dialog
       // Simulate a booking service or API call
+      alert(`Spot booked for ${selectedDate}`);
+      // You can call a booking service here, passing selectedDate
       // e.g. spotsService.bookSpot(id, selectedDate);
     } else {
-      alert('Please select a date to book.');
+      alert('Please select a date to book the spot.');
     }
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-    navigate('/my-spots'); // Redirect to My Spots
-  };
+  // return (
+  //   <>
+  //     <h1> hello</h1>
+  //   </>
+  // );
 
   return (
     <>
       <div>
-        <h1 className='text-base font-semibold leading-6 text-gray-900'>
-          {listingData?.description.title}
-        </h1>
-        {/* Top Image */}
-        <div className='relative'>
-          <img
-            src={listingData?.spot_building_photos[0]} // Use the first building photo as the top image
-            alt='Spot'
-            className='w-full h-80 object-cover rounded-2xl shadow-lg'
-            style={{ aspectRatio: '1 / 1' }} // Ensure image is square
-          />
-        </div>
+        <h2 className='text-base font-semibold leading-6 text-gray-900'>
+          {listingData.description.title}
+        </h2>
         <div className='lg:grid lg:grid-cols-12 lg:gap-x-16'>
           <div className='mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9'>
             <div className='flex items-center text-gray-900'>
-              {/* Previous Month Button */}
+              {/* previous month button */}
               <button
                 type='button'
                 onClick={handlePreviousMonth}
@@ -154,14 +139,14 @@ const SpotListing = () => {
                 <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
               </button>
 
-              {/* Month Header */}
+              {/* month header */}
               <div className='flex-auto text-sm font-semibold'>
                 {' '}
                 {currentDate.toLocaleString('default', { month: 'long' })}{' '}
                 {currentDate.getFullYear()}
               </div>
 
-              {/* Next Month Button */}
+              {/* next month button */}
               <button
                 type='button'
                 onClick={handleNextMonth}
@@ -172,7 +157,7 @@ const SpotListing = () => {
               </button>
             </div>
 
-            {/* Days Header */}
+            {/* days header */}
             <div className='mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500'>
               <div>M</div>
               <div>T</div>
@@ -183,7 +168,7 @@ const SpotListing = () => {
               <div>S</div>
             </div>
 
-            {/* Days of the Month Grid Logic */}
+            {/* days of the month grid logic */}
             <div className='isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200'>
               {days.map((day, dayIdx) => (
                 <button
@@ -193,10 +178,17 @@ const SpotListing = () => {
                   className={classNames(
                     'py-1.5 hover:bg-gray-100 focus:z-10',
                     day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
-                    selectedDate === day.date &&
-                      'bg-indigo-600 text-gray border-2 border-indigo-800',
-                    day.isToday && !selectedDate && 'text-indigo-600',
-                    !day.isCurrentMonth && 'text-gray-400',
+                    (day.isSelected || day.isToday) && 'font-semibold',
+                    day.isSelected && 'text-white',
+                    !day.isSelected &&
+                      day.isCurrentMonth &&
+                      !day.isToday &&
+                      'text-gray-900',
+                    !day.isSelected &&
+                      !day.isCurrentMonth &&
+                      !day.isToday &&
+                      'text-gray-400',
+                    day.isToday && !day.isSelected && 'text-indigo-600',
                     dayIdx === 0 && 'rounded-tl-lg',
                     dayIdx === 6 && 'rounded-tr-lg',
                     dayIdx === days.length - 7 && 'rounded-bl-lg',
@@ -205,7 +197,11 @@ const SpotListing = () => {
                 >
                   <time
                     dateTime={day.date}
-                    className='mx-auto flex h-7 w-7 items-center justify-center rounded-full'
+                    className={classNames(
+                      'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                      day.isSelected && day.isToday && 'bg-indigo-600',
+                      day.isSelected && !day.isToday && 'bg-gray-900'
+                    )}
                   >
                     {day.date.split('-').pop().replace(/^0/, '')}
                   </time>
@@ -213,7 +209,7 @@ const SpotListing = () => {
               ))}
             </div>
 
-            {/* Booking Button */}
+            {/* booking button */}
             <button
               type='button'
               onClick={handleBooking}
@@ -227,72 +223,120 @@ const SpotListing = () => {
             <div className='lg:col-span-7'>
               <DescriptionList className='mt-4'>
                 <DescriptionTerm>Host</DescriptionTerm>
-                <DescriptionDetails>{listingData?.username}</DescriptionDetails>
+                <DescriptionDetails>{listingData.username}</DescriptionDetails>
                 <DescriptionTerm>Address</DescriptionTerm>
-                <DescriptionDetails>{listingData?.address}</DescriptionDetails>
+                <DescriptionDetails>{listingData.address}</DescriptionDetails>
                 <DescriptionTerm>Description</DescriptionTerm>
                 <DescriptionDetails>
-                  {listingData?.description.summary}
+                  {listingData.description.summary}
                 </DescriptionDetails>
                 <DescriptionTerm>Price</DescriptionTerm>
-                <DescriptionDetails>${listingData?.price}</DescriptionDetails>
+                <DescriptionDetails>${listingData.price}</DescriptionDetails>
               </DescriptionList>
             </div>
           </div>
         </div>
       </div>
+    </>
+  );
 
-      {/* Booking Confirmation Modal */}
-      <Dialog
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        className='relative z-10'
-      >
-        <DialogBackdrop
-          transition
-          className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in'
-        />
-
-        <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
-          <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
-            <DialogPanel
-              transition
-              className='relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95'
-            >
-              <div>
-                <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100'>
-                  <CheckIcon
-                    aria-hidden='true'
-                    className='h-6 w-6 text-green-600'
-                  />
-                </div>
-                <div className='mt-3 text-center sm:mt-5'>
-                  <DialogTitle
-                    as='h3'
-                    className='text-base font-semibold leading-6 text-gray-900'
-                  >
-                    Booking Successful!
-                  </DialogTitle>
-                  <div className='mt-2'>
-                    <p className='text-sm text-gray-500'>
-                      Your booking for {selectedDate} has been confirmed.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className='mt-5 sm:mt-6'>
-                <button
-                  type='button'
-                  onClick={handleModalClose}
-                  className='inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                >
-                  Back to My Spots
-                </button>
-              </div>
-            </DialogPanel>
-          </div>
+  return (
+    <>
+      <Heading>{listingData.description.title}</Heading>
+      <div className='lg:grid lg:grid-cols-12 lg:gap-x-16'>
+        {/* Description List */}
+        <div className='lg:col-span-7'>
+          <DescriptionList className='mt-4'>
+            <DescriptionTerm>Host</DescriptionTerm>
+            <DescriptionDetails>{listingData.username}</DescriptionDetails>
+            <DescriptionTerm>Address</DescriptionTerm>
+            <DescriptionDetails>{listingData.address}</DescriptionDetails>
+            <DescriptionTerm>Description</DescriptionTerm>
+            <DescriptionDetails>
+              {listingData.description.summary}
+            </DescriptionDetails>
+            <DescriptionTerm>Price</DescriptionTerm>
+            <DescriptionDetails>${listingData.price}</DescriptionDetails>
+          </DescriptionList>
         </div>
-      </Dialog>
+
+        {/* Calendar Component */}
+        <div className='flex items-center text-gray-900'>
+          {/* Previous Month Button */}
+          <button
+            type='button'
+            onClick={handlePreviousMonth}
+            className='-m-1.5 flex items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
+          >
+            <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+          </button>
+
+          {/* Current Month Display */}
+          <div className='flex-auto text-sm font-semibold text-center'>
+            {currentDate.toLocaleString('default', { month: 'long' })}{' '}
+            {currentDate.getFullYear()}
+          </div>
+
+          {/* Next Month Button */}
+          <button
+            type='button'
+            onClick={handleNextMonth}
+            className='-m-1.5 flex items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
+          >
+            <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+          </button>
+        </div>
+
+        {/* Days of the Week */}
+        <div className='mt-6 grid grid-cols-7 text-xs font-semibold text-center text-gray-500'>
+          <div>M</div>
+          <div>T</div>
+          <div>W</div>
+          <div>T</div>
+          <div>F</div>
+          <div>S</div>
+          <div>S</div>
+        </div>
+
+        {/* Calendar Days */}
+        <div className='mt-2 grid grid-cols-7 gap-px bg-gray-200 text-sm shadow ring-1 ring-gray-200 rounded-lg'>
+          {days.map((day, dayIdx) => (
+            <button
+              key={day.date}
+              type='button'
+              className={classNames(
+                'relative py-1.5',
+                day.isCurrentMonth
+                  ? 'bg-white text-gray-900'
+                  : 'bg-gray-50 text-gray-400',
+                day.isToday ? 'bg-indigo-100 text-indigo-600' : '',
+                day.isSelected ? 'bg-indigo-600 text-white' : '',
+                dayIdx === 0 ? 'rounded-tl-lg' : '',
+                dayIdx === 6 ? 'rounded-tr-lg' : '',
+                dayIdx === days.length - 7 ? 'rounded-bl-lg' : '',
+                dayIdx === days.length - 1 ? 'rounded-br-lg' : ''
+              )}
+            >
+              <time
+                dateTime={day.date}
+                className={classNames(
+                  'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                  day.isSelected ? 'bg-indigo-600 text-white' : '',
+                  day.isToday && 'ring-2 ring-indigo-500'
+                )}
+              >
+                {new Date(day.date).getDate()}
+              </time>
+            </button>
+          ))}
+        </div>
+        <button
+          type='button'
+          className='mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+        >
+          Add event
+        </button>
+      </div>
     </>
   );
 };
