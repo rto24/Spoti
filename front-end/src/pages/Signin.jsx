@@ -1,8 +1,10 @@
+import SigninForm from '../components/custom/signin'
+
 const Signin = (props) => {
    return (
 
    <>
-        <h1>This is the Signin page</h1>
+        <SigninForm/>
     </>
    )
 }

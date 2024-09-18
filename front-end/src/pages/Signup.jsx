@@ -1,7 +1,10 @@
+import SignupForm from '../components/custom/signup'
+
+
 const Signup = (props) => {
    return (
-     <>
-        <h1>This is the Signup page</h1>
+     <> 
+        <SignupForm/>
     </>
    )
 }
