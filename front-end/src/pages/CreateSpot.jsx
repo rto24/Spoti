@@ -1,8 +1,6 @@
 
-
-
 const CreateSpot =(props)=> {
-
+  
     return (
         <>
             <h1>This is the Createspot page</h1>
