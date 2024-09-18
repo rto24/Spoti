@@ -29,36 +29,18 @@ function classNames(...classes) {
 
 // Test data
 // const mockData = {
-//   address: '123 Street, Los Angeles, CA 90013',
-//   price: 30,
-//   description: {
-//     title: 'Cozy Tree House Parking',
-//     summary: 'Warm, shaded, wide',
-//   },
-//   spot_car_photos: [],
-//   spot_building_photos: [
-//     'https://www.structurepoint.com/system/uploads/fae/image/asset/5710/Gallery6_resized.jpg',
-//   ],
-//   owner_id: 1,
-//   username: 'mockUser123',
+//   spot_id: 5,
+//   owner_id: 2,
+//   building_address: '101 Sinco St.',
+//   price: '100.00',
 //   status: true,
+//   renter_id: null,
+//   img: 'https://www.carfax.ca/resource-centre/articles/avoid-a-parking-lot-accident-with-these-tips/ParkingLotSafety.png',
 //   start_date: '',
 //   end_date: '',
+//   building_name: 'Equinox',
+//   description: 'Cozy, shaded, wide',
 // };
-
-const mockData = {
-  spot_id: 5,
-  owner_id: 2,
-  building_address: '101 Sinco St.',
-  price: '100.00',
-  status: true,
-  renter_id: null,
-  img: 'https://www.carfax.ca/resource-centre/articles/avoid-a-parking-lot-accident-with-these-tips/ParkingLotSafety.png',
-  start_date: '',
-  end_date: '',
-  building_name: 'Equinox',
-  description: 'Cozy, shaded, wide',
-};
 
 // Current date logic
 const getDaysInMonth = (month, year) => {
@@ -83,15 +65,14 @@ const isToday = (date) => {
 // Spot Listing
 const SpotListing = () => {
   const { id } = useParams(); // Takes params from url
-  const [listingData, setListingData] = useState(null); //
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false); // State for modal
-  const [days, setDays] = useState([]);
+  const [listingData, setListingData] = useState(null); // spot data state
+  const [currentDate, setCurrentDate] = useState(new Date()); // current date state
+  const [selectedDate, setSelectedDate] = useState(null); // selected date state
+  const [modalOpen, setModalOpen] = useState(false); // modal state
+  const [days, setDays] = useState([]); // amount of days state
   const context = useContext(SettingsContext); // context
-  const navigate = useNavigate();
 
-  console.log('from params:', id);
+  const navigate = useNavigate();
 
   // Check if context is available and log it
   useEffect(() => {
@@ -111,6 +92,7 @@ const SpotListing = () => {
       }
     };
     helper();
+    // Set state to test data
     // setListingData(mockData);
   }, [id]);
 
@@ -120,7 +102,7 @@ const SpotListing = () => {
     const monthDays = getDaysInMonth(month, year);
     setDays(
       monthDays.map((day) => ({
-        date: day.toISOString().split('T')[0], // Format as YYYY-MM-DD
+        date: day.toISOString().split('T')[0], // Formats to YYYY-MM-DD
         isCurrentMonth: true,
         isToday: isToday(day),
       }))
@@ -144,6 +126,7 @@ const SpotListing = () => {
     setSelectedDate(day.date);
   };
 
+  // Booking handler
   const handleBooking = () => {
     const { userData } = context;
     console.log('userData:', userData);
@@ -151,10 +134,10 @@ const SpotListing = () => {
       return alert('Please log in first.');
     }
     if (selectedDate) {
-      setModalOpen(true); // Open the modal dialog
+      setModalOpen(true); // Open the modal
       const helper = async () => {
         try {
-          spotsService.bookSpot(userData.id, selectedDate);
+          spotsService.bookSpot(userData.id, listingData.spot_id, selectedDate);
         } catch (err) {
           console.log('Error in handleBooking:', err);
         }
@@ -182,7 +165,7 @@ const SpotListing = () => {
         <h1 className='text-base font-semibold leading-6 text-gray-900'>
           {listingData?.building_name}
         </h1>
-        {/* Top Image */}
+        {/* Top image */}
         <div className='relative'>
           <img
             src={listingData?.img} // Use the first building photo as the top image
@@ -194,7 +177,7 @@ const SpotListing = () => {
         <div className='lg:grid lg:grid-cols-12 lg:gap-x-16'>
           <div className='mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9'>
             <div className='flex items-center text-gray-900'>
-              {/* Previous Month Button */}
+              {/* Previous month button */}
               <button
                 type='button'
                 onClick={handlePreviousMonth}
@@ -204,14 +187,14 @@ const SpotListing = () => {
                 <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
               </button>
 
-              {/* Month Header */}
+              {/* Month header */}
               <div className='flex-auto text-sm font-semibold'>
                 {' '}
                 {currentDate.toLocaleString('default', { month: 'long' })}{' '}
                 {currentDate.getFullYear()}
               </div>
 
-              {/* Next Month Button */}
+              {/* Next month button */}
               <button
                 type='button'
                 onClick={handleNextMonth}
@@ -222,7 +205,7 @@ const SpotListing = () => {
               </button>
             </div>
 
-            {/* Days Header */}
+            {/* Days header */}
             <div className='mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500'>
               <div>M</div>
               <div>T</div>
@@ -233,7 +216,7 @@ const SpotListing = () => {
               <div>S</div>
             </div>
 
-            {/* Days of the Month Grid Logic */}
+            {/* Days of the month grid logic */}
             <div className='isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200'>
               {days.map((day, dayIdx) => (
                 <button
@@ -263,7 +246,7 @@ const SpotListing = () => {
               ))}
             </div>
 
-            {/* Booking Button */}
+            {/* Booking button */}
             <button
               type='button'
               onClick={handleBooking}
@@ -272,7 +255,7 @@ const SpotListing = () => {
               Book Spot
             </button>
           </div>
-          {/* Description List */}
+          {/* Description list */}
           <div className='lg:grid lg:grid-cols-12 lg:gap-x-16'>
             <div className='lg:col-span-12'>
               {' '}
@@ -292,11 +275,11 @@ const SpotListing = () => {
               </DescriptionList>
             </div>
           </div>
-          {/* Description List End */}
+          {/* Description list end */}
         </div>
       </div>
 
-      {/* Booking Confirmation Modal */}
+      {/* Booking confirmation nodal */}
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}

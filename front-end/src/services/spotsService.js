@@ -60,11 +60,11 @@ const getSpotListing = async (spotId) => {
 
 const bookSpot = async (bookerId, spotId, selectedDate) => {
   try {
-    console.log('from bookSpot:', bookerId, selectedDate, spotId);
+    console.log('from bookSpot:', bookerId, spotId, selectedDate);
     const res = await fetch(`http://localhost:8080/book/spots/${spotId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ renter_id: bookerId, start_date: selectedDate }),
+      body: JSON.stringify({ booker_id: bookerId, start_date: selectedDate }),
     });
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`);
