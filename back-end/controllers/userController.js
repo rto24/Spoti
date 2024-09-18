@@ -28,6 +28,12 @@ const userController = {
             }
 
             const jwtToken = generateAccessToken({ id: user.user_id });
+
+            res.cookie('jwt', jwtToken, {
+                httpOnly: true,
+                maxAge: 3600000,
+                secure: false,
+            });
             
             res.status(200).json({ user, jwtToken });
         } catch (err) {
@@ -65,6 +71,12 @@ const userController = {
             console.log('Creation succussful', user);
             
             const jwtToken = generateAccessToken({ id: user.user_id });
+
+            res.cookie('jwt', jwtToken, {
+                httpOnly: true,
+                maxAge: 3600000,
+                secure: false,
+            });
 
             if(user) {
                 res.status(200).json({ user, jwtToken });
