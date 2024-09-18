@@ -21,7 +21,7 @@ spotController.getSpots = async (req, res, next) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Spot not found' });
     }
-    res.locals.spots = result.rows[0];
+    res.locals.spots = result.rows;
     return next();
   } catch (err) {
       return next(err);

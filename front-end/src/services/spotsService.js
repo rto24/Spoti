@@ -15,7 +15,33 @@ const getSpots = async () => {
     console.log(spots);
 
     //   return await res.json();
+<<<<<<< HEAD
     return spots;
+=======
+    return spots
+    } catch (err) {
+      console.log(`error in spotsServce.getSpots: ${err.message}`);
+    }
+  };
+
+
+const getMySpots = async (userId) => {
+  console.log('fetch made', userId)
+  try {
+    const res = await fetch(`http://localhost:8080/renter/spots/${userId}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!res.ok) {
+      throw new Error(`Response status: ${res.status}`);
+    }
+
+    const mySpots = await res.json()
+    console.log('mySpots from fetch', mySpots)
+
+  //   return await res.json();
+    return mySpots
+>>>>>>> dev
   } catch (err) {
     console.log(`error in spotsServce.getSpots: ${err.message}`);
   }
@@ -28,6 +54,7 @@ const createSpot = async (formData) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
+      credentials: 'include',
     });
     const json = await res.json();
     if (!res.ok) {
@@ -40,6 +67,7 @@ const createSpot = async (formData) => {
     throw new Error(err);
   }
 };
+<<<<<<< HEAD
 
 const getSpotListing = async (spotId) => {
   try {
@@ -75,3 +103,12 @@ const bookSpot = async (bookerId, spotId, selectedDate) => {
 };
 
 export { getSpots, createSpot, getSpotListing, bookSpot };
+=======
+  
+  export { 
+    getSpots,
+    createSpot, 
+    getMySpots,
+  };
+  
+>>>>>>> dev
