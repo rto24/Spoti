@@ -30,7 +30,10 @@ spotController.getSpots = async (req, res, next) => {
 
 spotController.addSpots = async (req, res, next) => {
   // const { owner_id, price, status, renter_id, img, start_date, end_date, building_address, building_name } = req.body;
-  const { price, status, renter_id, img, start_date, end_date, building_address, building_name } = req.body;
+  const { img, start_date, end_date, building_address, building_name } = req.body;
+  const price = 10;
+  const status = true;
+  const renter_id = null;
   const owner_id = req.user.id; //owner id is set to the current user id thats logged in
   const requestors = '{}';
   try {
