@@ -22,7 +22,7 @@ import {
 import { InboxIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 const navItems = [
-  { label: 'Open Spots', url: '/open-spot' },
+  { label: 'Open Spots', url: '/home' },
   { label: 'Create Spot', url: '/create-spot' },
   { label: 'My Spots', url: '/my-spots' },
 ]

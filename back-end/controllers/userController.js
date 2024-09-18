@@ -13,7 +13,7 @@ const userController = {
         try {
             const { username, password } = req.body;
 
-            const userQuery = 'SELECT * FROM Users WHERE username = $1';
+            const userQuery = 'SELECT * FROM "Users" WHERE username = $1';
             const userResult = await pool.query(userQuery, [username]);
 
             if (userResult.rows.length === 0) {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as spotsService from '../services/spotsService';
-import './SpotListing.module.css';
 
 import {
   DescriptionDetails,
@@ -114,8 +113,7 @@ const SpotListing = () => {
   const handleBooking = () => {
     if (selectedDate) {
       setModalOpen(true); // Open the modal dialog
-      // Simulate a booking service or API call
-      // e.g. spotsService.bookSpot(id, selectedDate);
+      spotsService.bookSpot(id, selectedDate);
     } else {
       alert('Please select a date to book.');
     }
@@ -123,8 +121,14 @@ const SpotListing = () => {
 
   const handleModalClose = () => {
     setModalOpen(false);
-    navigate('/my-spots'); // Redirect to My Spots
+    navigate('/home'); // Redirect to My Spots
   };
+
+  // return (
+  //   <>
+  //     <h1> hello</h1>
+  //   </>
+  // );
 
   return (
     <>
@@ -222,8 +226,8 @@ const SpotListing = () => {
               Book Spot
             </button>
           </div>
+          {/* Description List */}
           <div className='lg:grid lg:grid-cols-12 lg:gap-x-16'>
-            {/* Description List */}
             <div className='lg:col-span-7'>
               <DescriptionList className='mt-4'>
                 <DescriptionTerm>Host</DescriptionTerm>
@@ -239,6 +243,7 @@ const SpotListing = () => {
               </DescriptionList>
             </div>
           </div>
+          {/* Description List End */}
         </div>
       </div>
 
@@ -271,11 +276,11 @@ const SpotListing = () => {
                     as='h3'
                     className='text-base font-semibold leading-6 text-gray-900'
                   >
-                    Booking Successful!
+                    Booking Request Sent!
                   </DialogTitle>
                   <div className='mt-2'>
                     <p className='text-sm text-gray-500'>
-                      Your booking for {selectedDate} has been confirmed.
+                      Your booking request for {selectedDate} has been sent.
                     </p>
                   </div>
                 </div>
