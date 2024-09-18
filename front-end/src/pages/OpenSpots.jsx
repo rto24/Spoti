@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-
+import { getUserData } from "../services/authService"
 import { Badge } from "../components/template/catalyst/badge";
 import { Button } from "../components/template/catalyst/button";
 import { Divider } from "../components/template/catalyst/divider";
@@ -80,7 +80,7 @@ export default function OpenSpots() {
   //   let events = await getEvents()
   const [spots, setSpots] = useState([]);
   const context = useContext(SettingsContext);
-  const { building, updateBuilding } = context || {}; // Fallback to an empty object to avoid destructuring errors if context is null
+  const { building, updateBuilding, userData } = context || {}; // Fallback to an empty object to avoid destructuring errors if context is null
   
   // Check if context is available and log it
   useEffect(() => {
@@ -109,6 +109,8 @@ export default function OpenSpots() {
     fetchSpots()
   }, []);
 
+  console.log(userData);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getUTCDate()).padStart(2, '0');
@@ -122,7 +124,7 @@ export default function OpenSpots() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
           <Subheading>Open Spots at {building.building_name}</Subheading>
-      <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
                 <div className="flex gap-6 py-6 items-center ">
                   <div className="w-44 shrink-0">
                     <Link aria-hidden="true">
@@ -196,7 +198,7 @@ export default function OpenSpots() {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button color="green">Book</Button>
+                    <Button color="sky">Book</Button>
                     {/* <Button outline>See Details</Button> */}
                 </div>
                 </div>

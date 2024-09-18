@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as spotsService from '../services/spotsService';
+import { SettingsContext } from '../contexts/settingsContext';
 
 import {
   DescriptionDetails,
@@ -26,24 +27,40 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
+// Test data
+// const mockData = {
+//   address: '123 Street, Los Angeles, CA 90013',
+//   price: 30,
+//   description: {
+//     title: 'Cozy Tree House Parking',
+//     summary: 'Warm, shaded, wide',
+//   },
+//   spot_car_photos: [],
+//   spot_building_photos: [
+//     'https://www.structurepoint.com/system/uploads/fae/image/asset/5710/Gallery6_resized.jpg',
+//   ],
+//   owner_id: 1,
+//   username: 'mockUser123',
+//   status: true,
+//   start_date: '',
+//   end_date: '',
+// };
+
 const mockData = {
-  address: '123 Street, Los Angeles, CA 90013',
-  price: 30,
-  description: {
-    title: 'Cozy Tree House Parking',
-    summary: 'Warm, shaded, wide',
-  },
-  spot_car_photos: [],
-  spot_building_photos: [
-    'https://www.structurepoint.com/system/uploads/fae/image/asset/5710/Gallery6_resized.jpg',
-  ],
-  owner_id: 1,
-  username: 'mockUser123',
+  spot_id: 5,
+  owner_id: 2,
+  building_address: '101 Sinco St.',
+  price: '100.00',
   status: true,
+  renter_id: null,
+  img: 'https://www.carfax.ca/resource-centre/articles/avoid-a-parking-lot-accident-with-these-tips/ParkingLotSafety.png',
   start_date: '',
   end_date: '',
+  building_name: 'Equinox',
+  description: 'Cozy, shaded, wide',
 };
 
+// Current date logic
 const getDaysInMonth = (month, year) => {
   const date = new Date(year, month, 1);
   const days = [];
@@ -53,7 +70,7 @@ const getDaysInMonth = (month, year) => {
   }
   return days;
 };
-
+// Current date logic
 const isToday = (date) => {
   const today = new Date();
   return (
@@ -63,23 +80,39 @@ const isToday = (date) => {
   );
 };
 
+// Spot Listing
 const SpotListing = () => {
-  const { id } = useParams();
-  const [listingData, setListingData] = useState(null);
+  const { id } = useParams(); // Takes params from url
+  const [listingData, setListingData] = useState(null); //
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
+  const [modalOpen, setModalOpen] = useState(false); // State for modal
+  const [days, setDays] = useState([]);
+  const context = useContext(SettingsContext); // context
   const navigate = useNavigate();
 
   console.log('from params:', id);
 
+  // Check if context is available and log it
   useEffect(() => {
-    const fetchedListing = spotsService.getSpotListing(id);
-    // setListingData(fetchedListing);
-    setListingData(mockData);
-  }, [id]);
+    if (context) {
+      console.log('context', context);
+    }
+  }, [context]); // Dependency array includes context to trigger effect when it changes
 
-  const [days, setDays] = useState([]);
+  // Takes params from url and fetches the data for that spot id
+  useEffect(() => {
+    const helper = async () => {
+      try {
+        const fetchedListing = await spotsService.getSpotListing(2);
+        setListingData(fetchedListing);
+      } catch (err) {
+        console.log('Error in fetching listing:', err);
+      }
+    };
+    helper();
+    // setListingData(mockData);
+  }, [id]);
 
   useEffect(() => {
     const year = currentDate.getFullYear();
@@ -94,26 +127,39 @@ const SpotListing = () => {
     );
   }, [currentDate]);
 
+  // Handle calendar navigation
   const handlePreviousMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)
     );
   };
-
+  // Handle calendar navigation
   const handleNextMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1)
     );
   };
-
+  // Handle calendar navigation
   const handleDateSelect = (day) => {
     setSelectedDate(day.date);
   };
 
   const handleBooking = () => {
+    const { userData } = context;
+    console.log('userData:', userData);
+    if (!userData) {
+      return alert('Please log in first.');
+    }
     if (selectedDate) {
       setModalOpen(true); // Open the modal dialog
-      spotsService.bookSpot(id, selectedDate);
+      const helper = async () => {
+        try {
+          spotsService.bookSpot(userData.id, selectedDate);
+        } catch (err) {
+          console.log('Error in handleBooking:', err);
+        }
+      };
+      helper();
     } else {
       alert('Please select a date to book.');
     }
@@ -134,12 +180,12 @@ const SpotListing = () => {
     <>
       <div>
         <h1 className='text-base font-semibold leading-6 text-gray-900'>
-          {listingData?.description.title}
+          {listingData?.building_name}
         </h1>
         {/* Top Image */}
         <div className='relative'>
           <img
-            src={listingData?.spot_building_photos[0]} // Use the first building photo as the top image
+            src={listingData?.img} // Use the first building photo as the top image
             alt='Spot'
             className='w-full h-80 object-cover rounded-2xl shadow-lg'
             style={{ aspectRatio: '1 / 1' }} // Ensure image is square
@@ -228,15 +274,18 @@ const SpotListing = () => {
           </div>
           {/* Description List */}
           <div className='lg:grid lg:grid-cols-12 lg:gap-x-16'>
-            <div className='lg:col-span-7'>
+            <div className='lg:col-span-12'>
+              {' '}
               <DescriptionList className='mt-4'>
                 <DescriptionTerm>Host</DescriptionTerm>
-                <DescriptionDetails>{listingData?.username}</DescriptionDetails>
+                <DescriptionDetails>{listingData?.owner_id}</DescriptionDetails>
                 <DescriptionTerm>Address</DescriptionTerm>
-                <DescriptionDetails>{listingData?.address}</DescriptionDetails>
+                <DescriptionDetails>
+                  {listingData?.building_address}
+                </DescriptionDetails>
                 <DescriptionTerm>Description</DescriptionTerm>
                 <DescriptionDetails>
-                  {listingData?.description.summary}
+                  {listingData?.description}
                 </DescriptionDetails>
                 <DescriptionTerm>Price</DescriptionTerm>
                 <DescriptionDetails>${listingData?.price}</DescriptionDetails>
