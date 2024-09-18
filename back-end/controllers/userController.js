@@ -1,19 +1,19 @@
-// const jwt = require("jsonwebtoken"); // install? 
+const jwt = require("jsonwebtoken");
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const saltRounds = 10; 
 
-// function generateAccessToken(user) {
-//     const token = jwt.sign(user, process.env.JWT_SECRET, { algorithm: "HS256" });
-//     return token;
-// }
+function generateAccessToken(user) {
+    const token = jwt.sign(user, process.env.JWT_SECRET, { algorithm: "HS256" });
+    return token;
+}
 
 const userController = {
     async userLogin (req, res, next) {
         try {
             const { username, password } = req.body;
 
-            const userQuery = 'SELECT * FROM "Users" WHERE username = $1';
+            const userQuery = 'SELECT * FROM "User" WHERE username = $1';
             const userResult = await pool.query(userQuery, [username]);
 
             if (userResult.rows.length === 0) {
@@ -27,9 +27,15 @@ const userController = {
                 return res.status(401).json("Wrong password");
             }
 
-            // const jwtToken = generateAccessToken({ id: user.user_id });
+            const jwtToken = generateAccessToken({ id: user.user_id });
+
+            res.cookie('jwt', jwtToken, {
+                httpOnly: true,
+                maxAge: 3600000,
+                secure: false,
+            });
             
-            res.status(200).json({ user });
+            res.status(200).json({ user, jwtToken });
         } catch (err) {
             return next({
                 log: `userController error from userLogin ${err}`,
@@ -58,16 +64,22 @@ const userController = {
 
             const result = await pool.query(
                 'INSERT INTO "User" (username, password, email, address, payment_info, rental_ids, booking_ids) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                [username, password, email, address, payment_info, rental_ids, booking_ids]
+                [username, hashedPassword, email, address, payment_info, rental_ids, booking_ids]
             );
 
             const user = result.rows[0];
             console.log('Creation succussful', user);
             
-            // const jwtToken = generateAccessToken({ id: user.user_id });
+            const jwtToken = generateAccessToken({ id: user.user_id });
+
+            res.cookie('jwt', jwtToken, {
+                httpOnly: true,
+                maxAge: 3600000,
+                secure: false,
+            });
 
             if(user) {
-                res.status(200).json({ user });
+                res.status(200).json({ user, jwtToken });
             } else {
                 res.status(404).json({ message: "User could not be created" });
             }
