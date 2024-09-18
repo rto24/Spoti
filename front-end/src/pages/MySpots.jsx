@@ -58,6 +58,7 @@ const MySpots =(props)=> {
         <Heading>My Bookings</Heading>
         <ul>
         {mySpots
+            .slice(0,1)
             .map((spot, index) => (
             <li key={index}>
                 <div className="flex items-center justify-between">
@@ -65,9 +66,9 @@ const MySpots =(props)=> {
                     <div className="w-52 shrink-0">
                     <Badge
                         className="text-base/5 sm:text-base/5 mb-2"
-                        color={spot.status === false ? "lime" : "zinc"}
+                        color="zinc"
                     >
-                        {spot.status === true ? "Unavailable" : "Available"}
+                        BOOKED
                     </Badge>
                     <Link href={spot.url} aria-hidden="true">
                         <img
@@ -79,14 +80,17 @@ const MySpots =(props)=> {
                     </div>
                     <div className="space-y-4 items-center">
                     <div className="space-y-1.5">
-                        <div className="text-base/6 font-semibold text-zinc-500">
+                        {/* <div className="text-base/6 font-semibold text-zinc-500">
                             <Link>Stall {spot.name}</Link>
-                        </div>
+                        </div> */}
                         <div className="text-xl/6 font-semibold">
                         Available <strong>{formatDate(spot.start_date)}</strong> to {formatDate(spot.end_date)}
                         </div>
                         <div className="text-xs/6 text-zinc-500">
                         {spot.building_name} - {spot.building_address}
+                        </div>
+                        <div className="text-s/6 text-zinc-500">
+                        {spot.description}
                         </div>
                     </div>
                     <div>
@@ -98,7 +102,7 @@ const MySpots =(props)=> {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button color="sky">Book</Button>
+                    <Button color="red">Cancel Booking</Button>
                     {/* <Button outline>See Details</Button> */}
                 </div>
                 </div>
@@ -118,9 +122,9 @@ const MySpots =(props)=> {
                     <div className="w-52 shrink-0">
                     <Badge
                         className="text-base/5 sm:text-base/5 mb-2"
-                        color={spot.status === false ? "lime" : "zinc"}
+                        color={spot.status === true ? "lime" : "zinc"}
                     >
-                        {spot.status === true ? "Unavailable" : "Available"}
+                        {spot.status === true ? "Available" : "Unavailable"}
                     </Badge>
                     <Link href={spot.url} aria-hidden="true">
                         <img
@@ -132,14 +136,17 @@ const MySpots =(props)=> {
                     </div>
                     <div className="space-y-4 items-center">
                     <div className="space-y-1.5">
-                        <div className="text-base/6 font-semibold text-zinc-500">
+                        {/* <div className="text-base/6 font-semibold text-zinc-500">
                             <Link>Stall {spot.name}</Link>
-                        </div>
+                        </div> */}
                         <div className="text-xl/6 font-semibold">
                         Available <strong>{formatDate(spot.start_date)}</strong> to {formatDate(spot.end_date)}
                         </div>
                         <div className="text-xs/6 text-zinc-500">
                         {spot.building_name} - {spot.building_address}
+                        </div>
+                        <div className="text-s/6 text-zinc-500">
+                        {spot.description}
                         </div>
                     </div>
                     <div>
@@ -151,7 +158,7 @@ const MySpots =(props)=> {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button color="sky">Book</Button>
+                    <Button outline>Edit</Button>
                     {/* <Button outline>See Details</Button> */}
                 </div>
                 </div>

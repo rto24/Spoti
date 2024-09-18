@@ -86,7 +86,8 @@ export function ApplicationLayout({children}) {
             </NavbarItem>
             <Dropdown>
               <DropdownButton as={NavbarItem}>
-                <Avatar src="/profile-photo.jpg" square />
+                {/* <Avatar src="/profile-photo.jpg" square /> */}
+                <Cog8ToothIcon/>
               </DropdownButton>
               <DropdownMenu className="min-w-64" anchor="bottom end">
                 <DropdownItem href="/my-profile">

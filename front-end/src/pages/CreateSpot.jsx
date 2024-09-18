@@ -15,6 +15,7 @@ const CreateSpot =(props)=> {
       end_date: '',
       building_address: '',
       building_name: '',
+      description:'',
     });
 
     const updateMessage = (msg) => {
@@ -88,6 +89,23 @@ const CreateSpot =(props)=> {
                     />
                   </div>
                 </div>
+
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
+                  Why are you renting out your spot?
+                  </label>
+                  <div className="mt-2">
+                  <textarea
+                      id="description"
+                      name="description"
+                      required
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-48"
+                      style={{ height: '100px' }} // Inline style to set the height to 200px
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label htmlFor="start_date" className="block text-sm font-medium leading-6 text-gray-900">
                     First day of availability
@@ -104,6 +122,7 @@ const CreateSpot =(props)=> {
                     />
                   </div>
                 </div>
+
                 <div>
                   <label htmlFor="end_date" className="block text-sm font-medium leading-6 text-gray-900">
                   Last day of availability
@@ -153,13 +172,6 @@ const CreateSpot =(props)=> {
                 </div>
               </form>
             </div>
-  
-            <p className="mt-10 text-center text-sm text-white">
-              Not a member?{' '}
-              <a href="/signup" className="underline leading-6 text-white hover:text-gray-200">
-                Create your account
-              </a>
-            </p>
           </div>
         </div>
         </>
