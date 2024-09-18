@@ -50,6 +50,7 @@ const signin = async (user) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
+      credentials: 'include'
     });
     const json = await res.json();
     if (json.error) {

@@ -9,7 +9,7 @@ const Signin = (props) => {
    const navigate = useNavigate();
     const [message, setMessage] = useState(['']);
     const [formData, setFormData] = useState({
-      username: '',
+      email: '',
       password: '',
     });
 

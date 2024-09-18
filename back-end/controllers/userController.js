@@ -11,10 +11,15 @@ function generateAccessToken(user) {
 const userController = {
     async userLogin (req, res, next) {
         try {
-            const { username, password } = req.body;
+            // const { username, password } = req.body;
+            const { email, password } = req.body;
 
-            const userQuery = 'SELECT * FROM "User" WHERE username = $1';
-            const userResult = await pool.query(userQuery, [username]);
+            // const userQuery = 'SELECT * FROM "User" WHERE username = $1';
+            // const userResult = await pool.query(userQuery, [username]);
+
+            const userQuery = 'SELECT * FROM "User" WHERE email = $1';
+            const userResult = await pool.query(userQuery, [email]);
+
 
             if (userResult.rows.length === 0) {
                 return res.status(404).json("User not found");
