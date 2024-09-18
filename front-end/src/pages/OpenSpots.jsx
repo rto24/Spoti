@@ -124,7 +124,7 @@ export default function OpenSpots() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-sm:w-full sm:flex-1">
           <Subheading>Open Spots at {building.building_name}</Subheading>
-      <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
                 <div className="flex gap-6 py-6 items-center ">
                   <div className="w-44 shrink-0">
                     <Link aria-hidden="true">
@@ -198,7 +198,7 @@ export default function OpenSpots() {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button color="green">Book</Button>
+                    <Button color="sky">Book</Button>
                     {/* <Button outline>See Details</Button> */}
                 </div>
                 </div>

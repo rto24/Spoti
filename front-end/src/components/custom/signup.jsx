@@ -1,17 +1,5 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+import { Button } from '../template/catalyst/button'
+
 export default function SignupForm() {
     return (
       <>
@@ -26,12 +14,12 @@ export default function SignupForm() {
         <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <img
-              alt="Your Company"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              className="mx-auto h-10 w-auto"
+              alt="Spoti Logo"
+              src="./src/assets/logo_spoti_white.png"
+              className="mx-auto h-16 w-auto"
             />
-            <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Create your account
+            <h2 className=" text-center text-xl font-bold leading-9 tracking-wide text-white">
+              Peer to Peer Parking Rentals
             </h2>
           </div>
   
@@ -108,12 +96,19 @@ export default function SignupForm() {
                 </div> */}
   
                 <div>
-                  <button
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        color="sky"
+                    >
+                        Create Account
+                    </Button>
+                  {/* <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Create Account
-                  </button>
+                  </button> */}
                 </div>
               </form>
   
@@ -170,9 +165,9 @@ export default function SignupForm() {
               </div> */}
             </div>
   
-            <p className="mt-10 text-center text-sm text-gray-500">
+            <p className="mt-10 text-center text-sm text-white">
               Already a member?{' '}
-              <a href="/" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+              <a href="/" className="underline leading-6 text-white hover:text-gray-200">
                 Login
               </a>
             </p>

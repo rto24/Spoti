@@ -59,8 +59,11 @@ export function ApplicationLayout({children}) {
         <Navbar>
           <Dropdown>
             {/* <DropdownButton as={NavbarItem} className="max-lg:hidden"> */}
-              <Avatar src="/tailwind-logo.svg" />
-              <NavbarLabel>Tailwind Labs</NavbarLabel>
+              {/* <Avatar src="/tailwind-logo.svg" /> */}
+              <div className="w-14">
+                <img src="./src/assets/logo_spoti_black.png"></img>
+              </div>
+              {/* <NavbarLabel>Tailwind Labs</NavbarLabel> */}
               {/* <ChevronDownIcon /> */}
             {/* </DropdownButton> */}
             {/* <TeamDropdownMenu /> */}
@@ -115,7 +118,7 @@ export function ApplicationLayout({children}) {
       }
       sidebar={
         <Sidebar>
-          <SidebarHeader>
+          {/* <SidebarHeader>
             <Dropdown>
               <DropdownButton as={SidebarItem} className="lg:mb-2.5">
                 <Avatar src="/tailwind-logo.svg" />
@@ -124,7 +127,7 @@ export function ApplicationLayout({children}) {
               </DropdownButton>
               <TeamDropdownMenu />
             </Dropdown>
-          </SidebarHeader>
+          </SidebarHeader> */}
           <SidebarBody>
             <SidebarSection>
               {navItems.map(({ label, url }) => (
@@ -133,7 +136,11 @@ export function ApplicationLayout({children}) {
                 </SidebarItem>
               ))}
             </SidebarSection>
+            <div className="w-16 mt-4 ml-1">
+                <img src="./src/assets/logo_spoti_black.png"></img>
+              </div>
           </SidebarBody>
+          
         </Sidebar>
       }
     >

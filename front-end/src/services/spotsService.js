@@ -1,6 +1,6 @@
 import useFormatDate from '../hooks/useFormatDate'; // Adjust the path as necessary
 
-export const getSpots = async () => {
+const getSpots = async () => {
     console.log('fetch made')
     try {
       const res = await fetch('http://localhost:8080/renter/spots', {
@@ -20,6 +20,31 @@ export const getSpots = async () => {
       console.log(`error in spotsServce.getSpots: ${err.message}`);
     }
   };
+
+
+
+const createSpot = async (formData) => {
+  console.log('create spot form;',formData)
+  try {
+    const res = await fetch('http://localhost:8080/renter/spots', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      throw new Error('Username already exists!');
+    }
+    console.log(json)
+    localStorage.setItem('jwtToken', json.jwtToken);
+    return json;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
   
-//   export { getSpots };
+  export { 
+    getSpots,
+    createSpot, 
+  };
   
