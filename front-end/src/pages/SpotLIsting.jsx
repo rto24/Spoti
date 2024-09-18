@@ -194,7 +194,7 @@ const SpotListing = () => {
                     'py-1.5 hover:bg-gray-100 focus:z-10',
                     day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
                     selectedDate === day.date &&
-                      'bg-indigo-600 text-gray border-2 border-indigo-800',
+                      'bg-indigo-600 text-1 border-2 border-indigo-800',
                     day.isToday && !selectedDate && 'text-indigo-600',
                     !day.isCurrentMonth && 'text-gray-400',
                     dayIdx === 0 && 'rounded-tl-lg',
